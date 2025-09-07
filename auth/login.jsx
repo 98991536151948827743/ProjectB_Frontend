@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Popup from '../components/Popup';
 import Loading from '../components/Loading';
+import CheckingToken from '../utilis/CheckingToken';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -20,7 +21,6 @@ const Login = () => {
         {email,password},
         { withCredentials: true } // for cookies if backend uses them
       );
-        console.log(response.data);
       return response.data; // assume { token, user }
 
     } catch (error) {

@@ -35,7 +35,7 @@ const Popup = ({ message, type, onButtonClick, buttonText, onClose }) => {
         </div>
         <p className="text-gray-700 mb-4">{message}</p>
         <div className="flex flex-col space-y-2">
-          {onButtonClick && (
+          {onButtonClick && buttonText && (
             <button
               onClick={onButtonClick}
               className="bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
@@ -43,6 +43,7 @@ const Popup = ({ message, type, onButtonClick, buttonText, onClose }) => {
               {buttonText}
             </button>
           )}
+
           <button
             onClick={onClose}
             className="bg-gray-200 text-gray-800 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors"

@@ -12,9 +12,8 @@ const Signup = () => {
     gender: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // only for form submit
   const [popup, setPopup] = useState(null);
-  const [resendOtp, setResendOtp] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,7 +21,7 @@ const Signup = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ Signup API
+  // signup api
   const signupUser = async (data) => {
     try {
       const response = await axios.post("/api/register", data, {
@@ -35,25 +34,10 @@ const Signup = () => {
     }
   };
 
-  // ✅ Resend OTP API
-  const resendOtpApi = async () => {
-    try {
-      const response = await axios.post(
-        "/api/forgot-password",
-        { email: form.email },
-        { withCredentials: true }
-      );
-      return response.data;
-    } catch (err) {
-      throw new Error(err.response?.data?.message || "Failed to resend OTP");
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setPopup(null);
-    setResendOtp(false);
 
     try {
       const data = await signupUser(form);
@@ -62,32 +46,12 @@ const Signup = () => {
         type: "success",
       });
 
-      // Redirect to OTP verify page
+      // redirect after short delay
       setTimeout(() => navigate("/verify-otp"), 1500);
-    } catch (err) {
-      if (err.message.toLowerCase().includes("otp")) {
-        setResendOtp(true);
-        setPopup({
-          message: err.message,
-          type: "error",
-        });
-      } else {
-        setPopup({ message: err.message, type: "error" });
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendOtp = async () => {
-    setLoading(true);
-    try {
-      const data = await resendOtpApi();
-      setPopup({ message: data.message, type: "success" });
     } catch (err) {
       setPopup({ message: err.message, type: "error" });
     } finally {
-      setLoading(false);
+      setLoading(false); // ✅ stop loading after API call
     }
   };
 
@@ -187,21 +151,9 @@ const Signup = () => {
             className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300"
             disabled={loading}
           >
-            Sign Up
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
-
-        {resendOtp && (
-          <div className="text-center mt-4">
-            <button
-              onClick={handleResendOtp}
-              className="text-blue-600 hover:underline font-semibold"
-              disabled={loading}
-            >
-              Resend OTP
-            </button>
-          </div>
-        )}
       </div>
 
       {loading && <Loading />}

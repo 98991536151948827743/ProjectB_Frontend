@@ -6,7 +6,7 @@ import VerifyOtp from '../auth/VerifyOTP';
 import ForgotPassword from '../auth/ForgetPassword';
 import ResetPassword from '../auth/ResetPassword';
 import Signup from '../auth/Singup';
-
+import CheckingToken from '../utilis/CheckingToken';
 
 // Main App component to handle routing.
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
         <Route path='/verify-otp' element= {<VerifyOtp/>}/>
         <Route path='/forgot-password' element= {<ForgotPassword/>}/>
         <Route path='/reset-password' element= {<ResetPassword/>}/>
-        <Route path='/register' element= {<Signup/>}/>
+        <Route path="/register" element={<CheckingToken redirectTo="/dashboard" path="/api/check-auth"> <Signup /> </CheckingToken>}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
